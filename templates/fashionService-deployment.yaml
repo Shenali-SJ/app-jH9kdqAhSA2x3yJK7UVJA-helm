@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{.Values.microservices.fashionService.serviceName}}'
+  labels:
+    app: '{{.Values.microservices.fashionService.serviceName}}'
+spec:
+  replicas: '{{.Values.microservices.fashionService.avgReplicas}}'
+  selector:
+    matchLabels:
+      app: '{{.Values.microservices.fashionService.serviceName}}'
+  template:
+    metadata:
+      labels:
+        app: '{{.Values.microservices.fashionService.serviceName}}'
+    spec:
+      containers:
+      - name: '{{.Values.microservices.fashionService.serviceName}}'
+        image: '{{.Values.microservices.fashionService.dockerImage}}'
+        ports:
+        - containerPort: '{{.Values.microservices.fashionService.containerPort}}'
+        env:
+        - name: '{{.Values.microservices.fashionService.envs.MYSQL_ROOT_PASSWORD.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.fashionService.serviceName}}'
+              key: '{{.Values.microservices.fashionService.envs.MYSQL_ROOT_PASSWORD.name}}'
+        - name: '{{.Values.microservices.fashionService.envs.MYSQL_DATABASE.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.fashionService.serviceName}}'
+              key: '{{.Values.microservices.fashionService.envs.MYSQL_DATABASE.name}}'
+        - name: '{{.Values.microservices.fashionService.envs.DB_HOST.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.fashionService.serviceName}}'
+              key: '{{.Values.microservices.fashionService.envs.DB_HOST.name}}'
+        - name: '{{.Values.microservices.fashionService.envs.DB_USERNAME.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.fashionService.serviceName}}'
+              key: '{{.Values.microservices.fashionService.envs.DB_USERNAME.name}}'
+        - name: '{{.Values.microservices.fashionService.envs.DB_PASSWORD.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.fashionService.serviceName}}'
+              key: '{{.Values.microservices.fashionService.envs.DB_PASSWORD.name}}'
